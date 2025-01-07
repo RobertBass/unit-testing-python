@@ -9,6 +9,7 @@ def multiply(a, b):
 
 def divide(a, b):
     if b == 0:
-        raise ValueError("La division para 0 no esta definida")
-    return a / b
+        raise ZeroDivisionError("La division para 0 no esta definida")
+    else:
+        return a / b
 

@@ -21,7 +21,8 @@ class BankAccount:
                 self.balance -= amount
                 self.log_transaction(f"AMOUNT OF WITHDRAW: {amount}. NEW BALANCE: {self.balance}")
             else:
-                return self.log_transaction(f"INSUFFICIENT FUNDS. BALANCE: {self.balance}")
+                self.log_transaction(f"INSUFFICIENT FUNDS. BALANCE: {self.balance}")
+                return self.balance
         return self.balance
 
     

@@ -1,3 +1,6 @@
+from src.Exceptions import InsufficientFundsError
+
+
 class BankAccount:
     def __init__(self, balance=0, log_file=None):
         self.balance = balance
@@ -22,7 +25,7 @@ class BankAccount:
                 self.log_transaction(f"AMOUNT OF WITHDRAW: {amount}. NEW BALANCE: {self.balance}")
             else:
                 self.log_transaction(f"INSUFFICIENT FUNDS. BALANCE: {self.balance}")
-                return self.balance
+                raise InsufficientFundsError(f"INSUFFICIENT FUNDS. BALANCE: {self.balance}")
         return self.balance
 
     

@@ -1,4 +1,5 @@
 import unittest, os
+from src.Exceptions import InsufficientFundsError
 from src.bank_account import BankAccount
 
 class BankAccountTest(unittest.TestCase):
@@ -23,8 +24,8 @@ class BankAccountTest(unittest.TestCase):
         assert new_balance == 700
 
     def test_over_withdraw(self):
-        new_balance = self.account.withdraw(1200)
-        assert new_balance == 1000
+        with self.assertRaises(InsufficientFundsError):
+            self.account.withdraw(1200)
 
     def test_getBalance(self):
         assert self.account.get_balance() == 1000

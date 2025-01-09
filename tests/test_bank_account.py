@@ -1,6 +1,9 @@
 import unittest, os
-from src.Exceptions import InsufficientFundsError
+from unittest.mock import patch
+from src.Exceptions import InsufficientFundsError, WithdrawalTimeRestrictionError
 from src.bank_account import BankAccount
+
+# RUN "python -m unittest path" in terminal
 
 class BankAccountTest(unittest.TestCase):
     def setUp(self) -> None:
@@ -38,3 +41,31 @@ class BankAccountTest(unittest.TestCase):
         assert self._count_lines(self.account.log_file) == 1
         self.account.deposit(500)
         assert self._count_lines(self.account.log_file) == 2
+
+    @patch("src.bank_account.datetime")
+    def test_withdraw_during_bussines_hours(self, mock_datetime):
+        mock_datetime.now.return_value.hour = 10
+        self.assertEqual(self.account.withdraw(100), 900)
+
+    @patch("src.bank_account.datetime")
+    def test_withdraw_before_bussines_hours(self, mock_datetime):
+        mock_datetime.now.return_value.hour = 7
+        with self.assertRaises(WithdrawalTimeRestrictionError):
+            self.account.withdraw(100)
+
+    @patch("src.bank_account.datetime")
+    def test_withdraw_after_bussines_hours(self, mock_datetime):
+        mock_datetime.now.return_value.hour = 18
+        with self.assertRaises(WithdrawalTimeRestrictionError):
+            self.account.withdraw(100)
+
+    def test_deposit_many_ammounts(self):
+        test_cases = [
+            {"amount": 100, "expected": 1100},
+            {"amount": 3000, "expected": 4100},
+            {"amount": 4500, "expected": 8600},
+        ]
+
+        for case in test_cases:
+            with self.subTest(case=case):
+                self.assertEqual(self.account.deposit(case["amount"]), case["expected"])

@@ -20,7 +20,7 @@ class UserTest(unittest.TestCase):
         for _ in range(3):
             bank_account = BankAccount(
                 balance=self.faker.random_int(min=100, max=2000, step=50),
-                log_file="pruebas.txt"
+                log_file=self.faker.file_name(extension="txt")
                 )
             self.user.addAccount(account=bank_account)
         expected_value = self.user.get_total_balance()

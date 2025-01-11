@@ -30,3 +30,6 @@ jobs:
     - name: Test with unittest
       run: |
         python -m unittest discover tests
+    - name: Test with pytest
+      run: |
+        pytest tests/test_pytest.py -v

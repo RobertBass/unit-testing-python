@@ -22,11 +22,15 @@ class BankAccountTest(unittest.TestCase):
         new_balance = self.account.deposit(500)
         assert new_balance == 1500
     
-    def test_withdraw(self):
+    @patch("src.bank_account.datetime")
+    def test_withdraw(self, mock_datetime):
+        mock_datetime.now.return_value.hour = 10
         new_balance = self.account.withdraw(300)
         assert new_balance == 700
 
-    def test_over_withdraw(self):
+    @patch("src.bank_account.datetime")
+    def test_over_withdraw(self, mock_datetime):
+        mock_datetime.now.return_value.hour = 10
         with self.assertRaises(InsufficientFundsError):
             self.account.withdraw(1200)
 
